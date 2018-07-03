@@ -1,6 +1,7 @@
 package integration;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.ex.TimeoutException;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -8,14 +9,17 @@ import org.openqa.selenium.By;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import static com.codeborne.selenide.Configuration.FileDownloadMode.PROXY;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.isPhantomjs;
 import static org.apache.commons.io.FileUtils.readFileToString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.startsWith;
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assume.assumeFalse;
 
 public class FileDownloadViaProxyTest extends IntegrationTest {
@@ -64,5 +68,19 @@ public class FileDownloadViaProxyTest extends IntegrationTest {
     File downloadedFile = $(byText("Download me slowly (2000 ms)")).download(3000);
 
     assertEquals("hello_world.txt", downloadedFile.getName());
+  }
+
+  @Test
+  public void downloads_getsTimeoutException() throws IOException {
+    try {
+      long start = System.nanoTime();
+      $(byText("Download me slowly (2000 ms)")).download(1000);
+      long end = System.nanoTime();
+      fail("expected TimeoutException after 1000 ms, but downloaded file in " + TimeUnit.NANOSECONDS.toMillis(end-start) + " ms");
+    }
+    catch (TimeoutException expected) {
+      assertThat(expected.getMessage(), startsWith("Failed to download "));
+      assertThat(expected.getMessage(), endsWith("/files/hello_world.txt?pause=2000 in 1000 ms."));
+    }
   }
 }
