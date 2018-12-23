@@ -83,7 +83,8 @@ public abstract class IntegrationTest extends BaseIntegrationTest {
     }
 
     if (Configuration.proxyEnabled != proxyEnabled) {
-      Selenide.close();
+      //Selenide.close();
+      System.out.println("Changing proxy to" +proxyEnabled);
     }
     Configuration.proxyEnabled = proxyEnabled;
     Configuration.fileDownload = proxyEnabled ? PROXY : HTTPGET;
