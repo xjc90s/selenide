@@ -38,7 +38,7 @@ before_script:
 
 jobs:
   include:
-    - script: ./gradlew chrome_headless --no-daemon --console=plain
+    - script: ./gradlew chrome_headless --info --tests *LazyEv* --no-daemon --console=plain
       name: "Chrome headless"
 
 notifications:
