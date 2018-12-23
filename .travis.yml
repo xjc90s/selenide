@@ -9,10 +9,10 @@ jdk:
   - oraclejdk8
 
 addons:
-  apt:
-    update: true
+#  apt:
+#    update: true
   chrome: stable
-  firefox: latest
+#  firefox: latest
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -26,10 +26,10 @@ cache:
     - $HOME/.sonar/cache/
 
 before_install:
-  - sudo apt-get install -y libappindicator1 fonts-liberation
+#  - sudo apt-get install -y libappindicator1 fonts-liberation
   - export CHROME_BIN=/usr/bin/google-chrome
 
-install: true
+# install: true
 
 before_script:
   - export DISPLAY=:99.0
