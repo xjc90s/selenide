@@ -1,5 +1,9 @@
 conditions: v1
 
+env:
+  - WDM_GITHUBTOKENNAME=WebDriverManagerAuth
+  - WDM_GITHUBTOKENSECRET=67a3627b262477f7509aa982ce9e8adac9c957b9
+
 git:
   depth: 99999
 
