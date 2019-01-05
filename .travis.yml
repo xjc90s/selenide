@@ -11,8 +11,8 @@ jdk:
 addons:
 #  apt:
 #    update: true
-#  chrome: stable
-  firefox: latest
+  chrome: stable
+#  firefox: latest
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -38,8 +38,8 @@ before_script:
 
 jobs:
   include:
-    - script: ./gradlew firefox_headless --info --no-daemon --console=plain
-      name: "Firefox headless"
+    - script: ./gradlew chrome --tests *ClearCookies* --info --no-daemon --console=plain
+      name: "Chrome 1 test"
 
 notifications:
   slack:
