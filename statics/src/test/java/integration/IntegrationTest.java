@@ -31,13 +31,6 @@ import static org.junit.jupiter.api.Assumptions.assumeFalse;
 public abstract class IntegrationTest extends BaseIntegrationTest {
   private long defaultTimeout;
 
-  @AfterAll
-  public static void restartUnstableWebdriver() {
-    if (isIE() || isPhantomjs()) {
-      closeWebDriver();
-    }
-  }
-
   @BeforeAll
   static void resetSettingsBeforeClass() {
     resetSettings();
@@ -50,6 +43,19 @@ public abstract class IntegrationTest extends BaseIntegrationTest {
     rememberTimeout();
   }
 
+  @AfterEach
+  public void restoreDefaultProperties() {
+    timeout = defaultTimeout;
+    clickViaJs = false;
+  }
+
+  @AfterAll
+  public static void restartUnstableWebdriver() {
+    if (isIE() || isPhantomjs()) {
+      closeWebDriver();
+    }
+  }
+
   private static void resetSettings() {
     Configuration.browser = System.getProperty("selenide.browser", CHROME);
     Configuration.baseUrl = getBaseUrl();
@@ -60,7 +66,7 @@ public abstract class IntegrationTest extends BaseIntegrationTest {
     browserSize = System.getProperty("selenide.browserSize", "1200x960");
     Configuration.proxyPort = 0;
     Configuration.proxyHost = "";
-    toggleProxy(!isPhantomjs());
+    useProxy(!isPhantomjs());
   }
 
   private void restartReallyUnstableBrowsers() {
@@ -83,7 +89,12 @@ public abstract class IntegrationTest extends BaseIntegrationTest {
       "&timeout=" + timeout, pageObjectClass);
   }
 
-  protected static void toggleProxy(boolean proxyEnabled) {
+  /**
+   * Turns proxy on / off
+   * When toggling (on <-> off) happens, browser is closed
+   * @param proxyEnabled true - turn on, false - turn off
+   */
+  protected static void useProxy(boolean proxyEnabled) {
     if (proxyEnabled) {
       assumeFalse(isPhantomjs()); // I don't know why, but PhantomJS seems to ignore proxy
     }
@@ -102,11 +113,5 @@ public abstract class IntegrationTest extends BaseIntegrationTest {
       "document.querySelector('body').innerHTML = arguments[0];",
       String.join(" ", html)
     );
-  }
-
-  @AfterEach
-  public void restoreDefaultProperties() {
-    timeout = defaultTimeout;
-    clickViaJs = false;
   }
 }
