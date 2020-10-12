@@ -14,7 +14,7 @@ final class FrameWaitTest extends ITest {
   @BeforeEach
   void setUp() {
     openFile("page_with_frames_with_delays.html");
-    setTimeout(2000);
+    setTimeout(3000);
   }
 
   @RepeatedTest(100)
