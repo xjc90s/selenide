@@ -1,12 +1,15 @@
 package integration;
 
+import com.codeborne.selenide.junit5.TextReportExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static com.codeborne.selenide.Condition.name;
 import static com.codeborne.selenide.Condition.text;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ExtendWith({TextReportExtension.class})
 final class FrameWaitTest extends ITest {
   @BeforeEach
   void setUp() {
