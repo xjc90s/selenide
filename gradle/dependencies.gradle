@@ -4,11 +4,18 @@ repositories {
 
 ext {
   testngVersion = '6.9.10'
-  htmlunitVersion = '2.44.0'
-  htmlunitDriverVersion = '2.44.0'
+  htmlunitVersion = '2.45.0-SNAPSHOT'
+  htmlunitDriverVersion = '2.45.0-SNAPSHOT'
   seleniumVersion = '3.141.59'
   junitVersion = '5.5.0'
   jettyVersion = '9.4.19.v20190610'
+}
+
+repositories {
+  mavenCentral()
+  maven {
+    url "https://oss.sonatype.org/content/repositories/snapshots"
+  }
 }
 
 dependencies {
