@@ -48,7 +48,7 @@ final class FrameWaitTest extends ITest {
     assertThat(driver().source()).contains("Test::jquery");
   }
 
-  private String getFramesCount() {
+  private Number getFramesCount() {
     return driver().executeJavaScript("return window.frames.length");
   }
   private String getFrameSource(int index) {
