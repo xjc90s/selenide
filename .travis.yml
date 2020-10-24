@@ -48,5 +48,9 @@ jobs:
       name: "Chrome 1"
     - script: ./gradlew chrome_headless --no-daemon --console=plain -i --fail-fast
       name: "Chrome 2"
+    - script: ./gradlew chrome_headless --no-daemon --console=plain -i --fail-fast
+      name: "Chrome 3"
+    - script: ./gradlew chrome_headless --no-daemon --console=plain -i --fail-fast
+      name: "Chrome 4"
 
 after_failure: "./.upload_reports.sh"
