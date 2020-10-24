@@ -1,9 +1,11 @@
 package integration;
 
 import com.codeborne.selenide.junit5.TextReportExtension;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.WebDriverException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +54,11 @@ final class FrameWaitTest extends ITest {
     return driver().executeJavaScript("return window.frames.length");
   }
   private String getFrameSource(int index) {
-    return driver().executeJavaScript("return window.frames[" + index + "].document.body.innerHTML.substring(0, 50)");
+    try {
+      return driver().executeJavaScript("return window.frames[" + index + "].document.body.innerHTML.substring(0, 50)");
+    }
+    catch (WebDriverException e) {
+      return StringUtils.substring(e.toString(), 0, 150);
+    }
   }
 }
