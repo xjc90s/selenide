@@ -30,6 +30,13 @@ class FileRenderHandler extends BaseHandler {
     }
 
     generateSessionId(response);
+    if (request.getPathInfo().contains("page_with_jquery.html") || request.getPathInfo().contains("jquery.min.js")) {
+      try {
+        Thread.sleep(590);
+      } catch (InterruptedException e) {
+        throw new IllegalStateException(e);
+      }
+    }
     return new Result(SC_OK, getContentType(fileName), fileContent);
   }
 
