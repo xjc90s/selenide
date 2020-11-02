@@ -19,35 +19,42 @@ final class FrameWaitTest extends ITest {
 
   @BeforeEach
   void setUp() {
-    openFile("page_with_frames_with_delays.html");
     setTimeout(5000);
+    openFile("page_with_frames_with_delays.html");
   }
 
-  @RepeatedTest(5)
+  @RepeatedTest(100)
   void waitsUntilFrameAppears_inner() {
+    logFrames();
     switchTo().innerFrame("parentFrame");
+    logFrames();
     $("frame").shouldHave(name("childFrame_1"));
   }
 
-  @RepeatedTest(5)
+  @RepeatedTest(100)
   void waitsUntilFrameAppears_byTitle() {
+    logFrames();
     switchTo().frame("leftFrame");
+    logFrames();
     $("h1").shouldHave(text("Page with dynamic select"));
   }
 
   @RepeatedTest(100)
-  void waitsUntilFrameAppears_byIndex() throws InterruptedException {
-    Thread.sleep(100);
-    logger.info("************ frames.length={}", getFramesCount());
-    logger.info("************ frames[0]={}", getFrameSource(0));
-    logger.info("************ frames[1]={}", getFrameSource(1));
-    logger.info("************ frames[2]={}", getFrameSource(2));
-    logger.info("************ frames[3]={}", getFrameSource(3));
+  void waitsUntilFrameAppears_byIndex() {
+    logFrames();
 
     switchTo().frame(2);
 
     $("h1").shouldHave(text("Page with JQuery"));
     assertThat(driver().source()).contains("Test::jquery");
+  }
+
+  private void logFrames() {
+    Number count = getFramesCount();
+    logger.info("************ frames.length={}", count);
+    for (int i = 0; i < count.intValue(); i++) {
+      logger.info("************ frames[{}]={}", i, getFrameSource(i));
+    }
   }
 
   private Number getFramesCount() {
