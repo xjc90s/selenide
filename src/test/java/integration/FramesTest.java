@@ -2,6 +2,7 @@ package integration;
 
 import com.codeborne.selenide.ex.FrameNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.name;
@@ -16,7 +17,7 @@ final class FramesTest extends ITest {
     openFile("page_with_frames.html");
   }
 
-  @Test
+  @RepeatedTest(100)
   void canSwitchIntoInnerFrame() {
     assertThat(driver().title()).isEqualTo("Test::frames");
 
@@ -41,7 +42,7 @@ final class FramesTest extends ITest {
     assertThat(driver().getCurrentFrameUrl()).isEqualTo(getBaseUrl() + "/page_with_parent_frame.html");
   }
 
-  @Test
+  @RepeatedTest(100)
   void switchToInnerFrame_withoutParameters_switchesToDefaultContent() {
     switchTo().innerFrame("parentFrame");
     $("iframe").shouldHave(name("childFrame_1"));
@@ -50,7 +51,7 @@ final class FramesTest extends ITest {
     $("iframe").shouldHave(name("topFrame"));
   }
 
-  @Test
+  @RepeatedTest(100)
   void canSwitchBetweenFramesByTitle() {
     assertThat(driver().title()).isEqualTo("Test::frames");
 
@@ -66,7 +67,7 @@ final class FramesTest extends ITest {
     $("h1").shouldHave(text("Page with JQuery"));
   }
 
-  @Test
+  @RepeatedTest(100)
   void canSwitchBetweenFramesByIndex() {
     assumeFalse(browser().isChrome());
     assertThat(driver().title()).isEqualTo("Test::frames");
@@ -84,7 +85,7 @@ final class FramesTest extends ITest {
   }
 
 
-  @Test
+  @RepeatedTest(100)
   void throwsNoSuchFrameExceptionWhenSwitchingToAbsentFrameByElement() {
     assertThat(driver().title()).isEqualTo("Test::frames");
 
@@ -97,7 +98,7 @@ final class FramesTest extends ITest {
       .hasMessageStartingWith("No frame found with element: <div id=\"log\" displayed:false></div>");
   }
 
-  @Test
+  @RepeatedTest(100)
   void throwsNoSuchFrameExceptionWhenSwitchingToAbsentFrameByTitle() {
     assertThat(driver().title()).isEqualTo("Test::frames");
     assertThatThrownBy(() -> {
@@ -107,7 +108,7 @@ final class FramesTest extends ITest {
       .hasMessageStartingWith("No frame found with id/name: absentFrame");
   }
 
-  @Test
+  @RepeatedTest(100)
   void throwsNoSuchFrameExceptionWhenSwitchingToAbsentFrameByIndex() {
     assertThat(driver().title()).isEqualTo("Test::frames");
 
@@ -118,7 +119,7 @@ final class FramesTest extends ITest {
       .hasMessageStartingWith("No frame found with index: " + Integer.MAX_VALUE);
   }
 
-  @Test
+  @RepeatedTest(100)
   void attachesScreenshotWhenCannotFrameNotFound() {
     assertThatThrownBy(() -> switchTo().frame(33))
       .isInstanceOf(FrameNotFoundException.class)
