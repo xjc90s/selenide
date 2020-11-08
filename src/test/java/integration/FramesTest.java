@@ -21,7 +21,7 @@ final class FramesTest extends ITest {
     assertThat(driver().title()).isEqualTo("Test::frames");
 
     switchTo().innerFrame("parentFrame");
-    $("frame").shouldHave(name("childFrame_1"));
+    $("iframe").shouldHave(name("childFrame_1"));
     assertThat(driver().getCurrentFrameUrl()).isEqualTo(getBaseUrl() + "/page_with_parent_frame.html");
 
     switchTo().innerFrame("parentFrame", "childFrame_1");
@@ -29,7 +29,7 @@ final class FramesTest extends ITest {
     assertThat(driver().getCurrentFrameUrl()).isEqualTo(getBaseUrl() + "/hello_world.txt");
 
     switchTo().innerFrame("parentFrame", "childFrame_2");
-    $("frame").shouldHave(name("childFrame_2_1"));
+    $("iframe").shouldHave(name("childFrame_2_1"));
     assertThat(driver().getCurrentFrameUrl()).isEqualTo(getBaseUrl() + "/page_with_child_frame.html");
 
     switchTo().innerFrame("parentFrame", "childFrame_2", "childFrame_2_1");
@@ -37,17 +37,17 @@ final class FramesTest extends ITest {
     assertThat(driver().getCurrentFrameUrl()).isEqualTo(getBaseUrl() + "/child_frame.txt");
 
     switchTo().innerFrame("parentFrame");
-    $("frame").shouldHave(name("childFrame_1"));
+    $("iframe").shouldHave(name("childFrame_1"));
     assertThat(driver().getCurrentFrameUrl()).isEqualTo(getBaseUrl() + "/page_with_parent_frame.html");
   }
 
   @Test
   void switchToInnerFrame_withoutParameters_switchesToDefaultContent() {
     switchTo().innerFrame("parentFrame");
-    $("frame").shouldHave(name("childFrame_1"));
+    $("iframe").shouldHave(name("childFrame_1"));
 
     switchTo().innerFrame();
-    $("frame").shouldHave(name("topFrame"));
+    $("iframe").shouldHave(name("topFrame"));
   }
 
   @Test

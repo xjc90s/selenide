@@ -28,7 +28,7 @@ final class FrameWaitTest extends ITest {
     logFrames();
     switchTo().innerFrame("parentFrame");
     logFrames();
-    $("frame").shouldHave(name("childFrame_1"));
+    $("iframe").shouldHave(name("childFrame_1"));
   }
 
   @RepeatedTest(100)

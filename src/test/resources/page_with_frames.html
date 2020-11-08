@@ -5,12 +5,10 @@
   <meta charset="UTF-8">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 </head>
-<frameset rows="80,*" cols="*">
-  <frame src="hello_world.txt" name="topFrame" id="top-frame" scrolling="no" noresize>
-  <frameset cols="300,*">
-    <frame src="page_with_dynamic_select.html" name="leftFrame" scrolling="no" noresize>
-    <frame src="page_with_jquery.html" name="mainFrame">
-    <frame src="page_with_parent_frame.html" name="parentFrame">
-  </frameset>
-</frameset>
+<body>
+  <iframe name="topFrame" id="top-frame" src="hello_world.txt" height="50px" width="100%"></iframe>
+  <iframe name="leftFrame" src="page_with_dynamic_select.html" style="width: 30%;"></iframe>
+  <iframe name="mainFrame" src="page_with_jquery.html" style="width: 69%;"></iframe>
+  <iframe name="parentFrame" src="page_with_parent_frame.html"></iframe>
+</body>
 </html>
