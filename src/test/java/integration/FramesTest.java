@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assumptions.assumeFalse;
 final class FramesTest extends ITest {
   @BeforeEach
   void openPage() {
+    setTimeout(5000);
     openFile("page_with_frames.html");
   }
 
