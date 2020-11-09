@@ -9,6 +9,16 @@
   <iframe name="topFrame" id="top-frame" src="hello_world.txt" height="50px" width="100%"></iframe>
   <iframe name="leftFrame" src="page_with_dynamic_select.html" style="width: 30%;"></iframe>
   <iframe name="mainFrame" src="page_with_jquery.html" style="width: 69%;"></iframe>
-  <iframe name="parentFrame" src="page_with_parent_frame.html"></iframe>
+  <iframe name="parentFrame"></iframe>
+
+  <script type="text/javascript">
+    function loadFrame() {
+      frames['parentFrame'].location.href = 'page_with_parent_frame.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(loadFrame, 100);
+    });
+  </script>
 </body>
 </html>
