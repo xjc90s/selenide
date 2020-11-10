@@ -1,7 +1,7 @@
 conditions: v1
 
 git:
-  depth: 99999
+  depth: 9999
 
 dist: focal
 
