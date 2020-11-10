@@ -44,6 +44,8 @@ jobs:
       name: "Firefox 3"
     - script: ./gradlew firefox_headless --no-daemon --console=plain -i --fail-fast
       name: "Firefox 4"
+    - script: ./gradlew firefox_headless --no-daemon --console=plain -i --fail-fast
+      name: "Firefox 5"
 #    - script: ./gradlew chrome_headless --no-daemon --console=plain -i --fail-fast
 #      name: "Chrome 1"
 #    - script: ./gradlew chrome_headless --no-daemon --console=plain -i --fail-fast
