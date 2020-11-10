@@ -1,9 +1,12 @@
 package integration;
 
 import com.codeborne.selenide.ex.FrameNotFoundException;
+import com.codeborne.selenide.impl.Waiter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+
+import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.name;
 import static com.codeborne.selenide.Condition.text;
@@ -12,35 +15,52 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 final class FramesTest extends ITest {
+  private final Waiter waiter = new Waiter();
+
   @BeforeEach
   void openPage() {
     setTimeout(5000);
     openFile("page_with_frames.html");
   }
 
+  private void waitForUrl(String url) {
+    waiter.wait("current url", s -> driver().getCurrentFrameUrl().equals(getBaseUrl() + url), 4000, 50);
+    assertThat(driver().getCurrentFrameUrl()).isEqualTo(getBaseUrl() + url);
+  }
+
+  private void waitForSource(String pageSource) {
+    waiter.wait("current page source", s -> Objects.equals(driver().source(), pageSource), 4000, 50);
+    assertThat(driver().source()).contains(pageSource);
+  }
+
+  private void waitForTitle(String title) {
+    waiter.wait("current page title", s -> Objects.equals(driver().title(), title), 4000, 50);
+    assertThat(driver().title()).isEqualTo(title);
+  }
+
   @RepeatedTest(100)
   void canSwitchIntoInnerFrame() {
-    assertThat(driver().title()).isEqualTo("Test::frames");
+    waitForTitle("Test::frames");
 
     switchTo().innerFrame("parentFrame");
     $("iframe").shouldHave(name("childFrame_1"));
-    assertThat(driver().getCurrentFrameUrl()).isEqualTo(getBaseUrl() + "/page_with_parent_frame.html");
+    waitForUrl("/page_with_parent_frame.html");
 
     switchTo().innerFrame("parentFrame", "childFrame_1");
-    assertThat(driver().source()).contains("Hello, WinRar!");
-    assertThat(driver().getCurrentFrameUrl()).isEqualTo(getBaseUrl() + "/hello_world.txt");
+    waitForUrl("/hello_world.txt");
+    waitForSource("Hello, WinRar!");
 
     switchTo().innerFrame("parentFrame", "childFrame_2");
     $("iframe").shouldHave(name("childFrame_2_1"));
-    assertThat(driver().getCurrentFrameUrl()).isEqualTo(getBaseUrl() + "/page_with_child_frame.html");
+    waitForUrl("/page_with_child_frame.html");
 
     switchTo().innerFrame("parentFrame", "childFrame_2", "childFrame_2_1");
-    assertThat(driver().source()).contains("This is last frame!");
-    assertThat(driver().getCurrentFrameUrl()).isEqualTo(getBaseUrl() + "/child_frame.txt");
+    waitForUrl("/child_frame.txt");
+    waitForSource("This is last frame!");
 
     switchTo().innerFrame("parentFrame");
+    waitForUrl("/page_with_parent_frame.html");
     $("iframe").shouldHave(name("childFrame_1"));
-    assertThat(driver().getCurrentFrameUrl()).isEqualTo(getBaseUrl() + "/page_with_parent_frame.html");
   }
 
   @RepeatedTest(100)
@@ -54,10 +74,10 @@ final class FramesTest extends ITest {
 
   @RepeatedTest(100)
   void canSwitchBetweenFramesByTitle() {
-    assertThat(driver().title()).isEqualTo("Test::frames");
+    waitForTitle("Test::frames");
 
     switchTo().frame("topFrame");
-    assertThat(driver().source()).contains("Hello, WinRar!");
+    waitForSource("Hello, WinRar!");
 
     switchTo().defaultContent();
     switchTo().frame("leftFrame");
@@ -71,10 +91,10 @@ final class FramesTest extends ITest {
   @RepeatedTest(100)
   void canSwitchBetweenFramesByIndex() {
     assumeFalse(browser().isChrome());
-    assertThat(driver().title()).isEqualTo("Test::frames");
+    waitForTitle("Test::frames");
 
     switchTo().frame(0);
-    assertThat(driver().source()).contains("Hello, WinRar!");
+    waitForSource("Hello, WinRar!");
 
     switchTo().defaultContent();
     switchTo().frame(1);
@@ -85,10 +105,9 @@ final class FramesTest extends ITest {
     $("h1").shouldHave(text("Page with JQuery"));
   }
 
-
   @RepeatedTest(100)
   void throwsNoSuchFrameExceptionWhenSwitchingToAbsentFrameByElement() {
-    assertThat(driver().title()).isEqualTo("Test::frames");
+    waitForTitle("Test::frames");
 
     assertThatThrownBy(() -> {
       switchTo().frame("mainFrame");
@@ -101,7 +120,7 @@ final class FramesTest extends ITest {
 
   @RepeatedTest(100)
   void throwsNoSuchFrameExceptionWhenSwitchingToAbsentFrameByTitle() {
-    assertThat(driver().title()).isEqualTo("Test::frames");
+    waitForTitle("Test::frames");
     assertThatThrownBy(() -> {
       switchTo().frame("absentFrame");
     })
@@ -111,7 +130,7 @@ final class FramesTest extends ITest {
 
   @RepeatedTest(100)
   void throwsNoSuchFrameExceptionWhenSwitchingToAbsentFrameByIndex() {
-    assertThat(driver().title()).isEqualTo("Test::frames");
+    waitForTitle("Test::frames");
 
     assertThatThrownBy(() -> {
       switchTo().frame(Integer.MAX_VALUE);

@@ -8,7 +8,7 @@ import static java.lang.System.currentTimeMillis;
 import java.util.function.Predicate;
 
 @ParametersAreNonnullByDefault
-class Waiter {
+public class Waiter {
   @CheckReturnValue
   public <T> void wait(T subject, Predicate<T> condition, long timeout, long pollingInterval) {
     sleep(pollingInterval);
