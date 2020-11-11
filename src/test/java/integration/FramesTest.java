@@ -4,7 +4,6 @@ import com.codeborne.selenide.ex.FrameNotFoundException;
 import com.codeborne.selenide.impl.Waiter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
 
@@ -29,7 +28,7 @@ final class FramesTest extends ITest {
   }
 
   private void waitForSource(String pageSource) {
-    waiter.wait("current page source", s -> Objects.equals(driver().source(), pageSource), 4000, 50);
+    waiter.wait("current page source", s -> driver().source().contains(pageSource), 4000, 50);
     assertThat(driver().source()).contains(pageSource);
   }
 
@@ -108,7 +107,7 @@ final class FramesTest extends ITest {
   @RepeatedTest(100)
   void throwsNoSuchFrameExceptionWhenSwitchingToAbsentFrameByElement() {
     waitForTitle("Test::frames");
-
+    setTimeout(10);
     assertThatThrownBy(() -> {
       switchTo().frame("mainFrame");
       // $("#log") is present, but not frame.
@@ -121,6 +120,8 @@ final class FramesTest extends ITest {
   @RepeatedTest(100)
   void throwsNoSuchFrameExceptionWhenSwitchingToAbsentFrameByTitle() {
     waitForTitle("Test::frames");
+
+    setTimeout(10);
     assertThatThrownBy(() -> {
       switchTo().frame("absentFrame");
     })
@@ -132,6 +133,7 @@ final class FramesTest extends ITest {
   void throwsNoSuchFrameExceptionWhenSwitchingToAbsentFrameByIndex() {
     waitForTitle("Test::frames");
 
+    setTimeout(10);
     assertThatThrownBy(() -> {
       switchTo().frame(Integer.MAX_VALUE);
     })
@@ -141,6 +143,7 @@ final class FramesTest extends ITest {
 
   @RepeatedTest(100)
   void attachesScreenshotWhenCannotFrameNotFound() {
+    setTimeout(10);
     assertThatThrownBy(() -> switchTo().frame(33))
       .isInstanceOf(FrameNotFoundException.class)
       .hasMessageStartingWith("No frame found with index: 33")
