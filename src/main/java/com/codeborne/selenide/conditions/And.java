@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
+import static com.codeborne.selenide.conditions.ConditionHelpers.merge;
 import static java.util.stream.Collectors.joining;
 
 @ParametersAreNonnullByDefault
@@ -17,9 +18,9 @@ public class And extends Condition {
   private final List<Condition> conditions;
   private Condition lastFailedCondition;
 
-  public And(String name, List<Condition> conditions) {
+  public And(String name, Condition condition1, Condition condition2, Condition... conditions) {
     super(name);
-    this.conditions = conditions;
+    this.conditions = merge(condition1, condition2, conditions);
   }
 
   @CheckReturnValue

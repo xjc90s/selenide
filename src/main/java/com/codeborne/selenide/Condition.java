@@ -39,8 +39,6 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.Predicate;
 
-import static java.util.Arrays.asList;
-
 /**
  * Conditions to match web elements: checks for visibility, text etc.
  */
@@ -511,8 +509,8 @@ public abstract class Condition {
    */
   @CheckReturnValue
   @Nonnull
-  public static Condition and(String name, Condition... conditions) {
-    return new And(name, asList(conditions));
+  public static Condition and(String name, Condition condition1, Condition condition2, Condition... conditions) {
+    return new And(name, condition1, condition2, conditions);
   }
 
   /**
@@ -524,8 +522,8 @@ public abstract class Condition {
    */
   @CheckReturnValue
   @Nonnull
-  public static Condition or(String name, Condition... conditions) {
-    return new Or(name, asList(conditions));
+  public static Condition or(String name, Condition condition1, Condition condition2, Condition... conditions) {
+    return new Or(name, condition1, condition2, conditions);
   }
 
   /**
